@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MovieList
 {
@@ -24,28 +25,54 @@ namespace MovieList
             Movie m4 = new Movie("Spaceballs", Genre.Comedy);
             movies.Add(m4);
 
+            Movie m5 = new Movie("Toy Story 4", Genre.Comedy);
+            movies.Add(m5);
+
+            Movie m6 = new Movie("Anchorman", Genre.Comedy);
+            movies.Add(m6);
+
+            Movie m7 = new Movie("Dude Where's My Car?", Genre.Comedy);
+            movies.Add(m7);
+
+            Movie m8 = new Movie("The Beach", Genre.Drama);
+            movies.Add(m8);
+
+            Movie m9 = new Movie("The Holiday", Genre.Romance);
+            movies.Add(m9);
+
+            Movie m10 = new Movie("The Goonies", Genre.Comedy);
+            movies.Add(m10);
+
             Console.WriteLine("Here are the accepted genres.");
             Genre[] acceptedGenres = (Genre[])Enum.GetValues(typeof(Genre));
 
-            foreach (Genre g in acceptedGenres)
+            
+
+            for (int i = 0; i < acceptedGenres.Length; i++)
             {
-                Console.WriteLine(g);
+                Console.WriteLine($"{i}: {acceptedGenres[i]}");
             }
 
             bool goOn = true;
 
             while (goOn == true)
             {
-
-                string input = GetUserInput("Please input a movie genre you wish to search.");
-                Genre inputGenre = (Genre)Enum.Parse(typeof(Genre), input);
+                List<Movie> genreMovies = new List<Movie>();
+                int input = GetGenreIndex();
+                Genre inputGenre = (Genre)acceptedGenres[input];
 
                 foreach (Movie m in movies)
                 {
                     if (m.genre == inputGenre)
                     {
-                        Console.WriteLine(m.Title);
+                        genreMovies.Add(m);
                     }
+                }
+                List<Movie> sortedMovies = genreMovies.OrderBy(x => x.Title).ToList();
+
+                foreach (Movie m in sortedMovies)
+                {
+                    Console.WriteLine(m.Title);
                 }
 
                 goOn = GetContinue();
@@ -63,6 +90,23 @@ namespace MovieList
             return input;
         }
 
+        public static int GetGenreIndex()
+        {
+            string input = GetUserInput("Please enter the number for the genre you would like to see.");
+            int output = -1;
+
+            try
+            {
+                output = int.Parse(input);
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("You must enter a number listed above.");
+                output = GetGenreIndex();
+
+            }
+            return output;
+        }
 
         public static bool GetContinue()
         {

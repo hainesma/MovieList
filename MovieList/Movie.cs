@@ -10,7 +10,8 @@ namespace MovieList
         Comedy,
         Romance,
         Mystery,
-        Action
+        Action,
+        Drama
     }
 
     class Movie
